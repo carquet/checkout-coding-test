@@ -14,7 +14,12 @@ class Checkout
 	# end
 end
 
-mybasket = Checkout.new({"apple":5, "pear": 10})
+prices_rules = {
+	:"apple" => 5,
+	:"pear" => 10
+}
+
+mybasket = Checkout.new(prices_rules)
 mybasket.scan("apple")
 mybasket.scan("apple")
 mybasket.scan("pear")
