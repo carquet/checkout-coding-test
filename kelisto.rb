@@ -1,4 +1,5 @@
 class Checkout
+
 	attr_reader :basket, :pricing_rules
 	def initialize(pricing_rules)
 		@basket = {}
@@ -10,14 +11,18 @@ class Checkout
 		!@basket[item]? @basket[item] = 1 : @basket[item]+= 1
 	end
 
-	# def change_price_rules(new_price_rules)
-	# 	@prices_rules = new_price_rules
-	# end
+	def show_item
+		@basket.each do |item, quantity|
+			puts item
+			end
+
+	end
+
 	def total
 		@basket.each do |item, quantity|
-			@total += @pricing_rules[item]*quantity
-		end	
-		@total
+			@total += @pricing_rules[item] * quantity
+		end	 
+		puts "Total price expected: £ #{@total}"
 	end
 	
 end
@@ -37,6 +42,7 @@ mybasket.scan(:pear)
 puts mybasket.basket
 puts mybasket.pricing_rules
 puts mybasket.total
+puts mybasket.show_item
 
 
 
