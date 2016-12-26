@@ -7,26 +7,48 @@ class Checkout
 		
 	end
 
+# add item to cart
 	def scan(code)
 		!@basket[code]? @basket[code] = 1 : @basket[code]+= 1
 	end
 
-
-
-	def discount
-		@total = 0
+# calculate total cost 
+	def total
+		sub_total = 0
 		@basket.each do |code, quantity|
-			if  code == :SR1 && quantity >= 3
-				 += (@pricing_rules[code] * quantity) - 4.50
-			end
-			if code == :GR1 && quantity % 3 == 1
-				@total += (@pricing_rules[code]* quantity) - @pricing_rules[code]
-			end	
-				@total += @pricing_rules[code] * quantity
-		end	 
-		puts "Total price expected: £ #{@total}"
+			sub_total += @pricing_rules[code]*quantity
+		end
+		@total = sub_total
+		puts "Total without discount: £ #{@total}"
+		discount
 	end
 
+# determine appropriate discount according to items
+	def discount
+		@basket.each do |code, quantity|
+			if code == :SR1 && quantity >= 3
+				@discount = 4.50
+				puts "your strawberry has been reduced of 4.50"
+			else
+				@green_tea_discount = 0
+			end
+
+			if code == :GR1 && quantity >=2
+				@discount = @pricing_rules[code]
+				puts "Buy one green tea get one free!"
+			else
+				@strawberry_discount = 0
+			end
+		end
+
+		apply_discount
+	end
+
+# apply discount when needed
+	def apply_discount
+		@total -= @discount
+		puts "Total price expected: £ #{@total}"
+	end
 
 end
 
@@ -48,10 +70,12 @@ mybasket1.scan(:GR1)
 mybasket1.scan(:CF1)
 mybasket1.total
 
+
 mybasket2 = Checkout.new(pricing_rules)
 mybasket2.scan(:GR1)
 mybasket2.scan(:GR1)
 mybasket2.total
+
 
 mybasket3 = Checkout.new(pricing_rules)
 mybasket3.scan(:SR1)
@@ -59,6 +83,7 @@ mybasket3.scan(:SR1)
 mybasket3.scan(:GR1)
 mybasket3.scan(:SR1)
 mybasket3.total
+
 
 
 
