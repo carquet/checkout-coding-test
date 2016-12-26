@@ -12,34 +12,22 @@ class Checkout
 	end
 
 
+
 	def discount
-		@total_discount = 0
-		@basket.each do |code, quantity|
-			if  code != :SR1 && quantity % 2 == 0
-				@total_discount = (@pricing_rules[code]* quantity)/2
-			else
-				@total_discount += @pricing_rules[code] * quantity
-			end
-
-
-
-			 
-		end
-	end
-
-
-	def total
 		@total = 0
 		@basket.each do |code, quantity|
-			if discount
-				@total += @total_discount
-			else
-			@total += @pricing_rules[code] * quantity
+			if  code == :SR1 && quantity >= 3
+				 += (@pricing_rules[code] * quantity) - 4.50
 			end
-		@total
+			if code == :GR1 && quantity % 3 == 1
+				@total += (@pricing_rules[code]* quantity) - @pricing_rules[code]
+			end	
+				@total += @pricing_rules[code] * quantity
 		end	 
-		puts "\n Total price expected: £ #{@total}"
+		puts "Total price expected: £ #{@total}"
 	end
+
+
 end
 
 
@@ -52,15 +40,26 @@ pricing_rules = {
 }
 
 
-mybasket = Checkout.new(pricing_rules)
-# mybasket.scan(:GR1)
-# mybasket.scan(:GR1)
-mybasket.scan(:SR1)
-mybasket.scan(:SR1)
+mybasket1 = Checkout.new(pricing_rules)
+mybasket1.scan(:GR1)
+mybasket1.scan(:SR1)
+mybasket1.scan(:GR1)
+mybasket1.scan(:GR1)
+mybasket1.scan(:CF1)
+mybasket1.total
 
-# puts mybasket.basket
-# puts mybasket.pricing_rules
-mybasket.total
+mybasket2 = Checkout.new(pricing_rules)
+mybasket2.scan(:GR1)
+mybasket2.scan(:GR1)
+mybasket2.total
+
+mybasket3 = Checkout.new(pricing_rules)
+mybasket3.scan(:SR1)
+mybasket3.scan(:SR1)
+mybasket3.scan(:GR1)
+mybasket3.scan(:SR1)
+mybasket3.total
+
 
 
 
