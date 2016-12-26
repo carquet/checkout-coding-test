@@ -3,46 +3,65 @@ class Checkout
 	attr_reader :basket, :pricing_rules
 	def initialize(pricing_rules)
 		@basket = {}
-		@pricing_rules = pricing_rules
-		@total = 0	
+		@pricing_rules = pricing_rules	
+		
 	end
 
-	def scan(item)
-		!@basket[item]? @basket[item] = 1 : @basket[item]+= 1
+	def scan(code)
+		!@basket[code]? @basket[code] = 1 : @basket[code]+= 1
 	end
 
-	def show_item
-		@basket.each do |item, quantity|
-			puts item
+
+	def discount
+		@total_discount = 0
+		@basket.each do |code, quantity|
+			if  code != :SR1 && quantity % 2 == 0
+				@total_discount = (@pricing_rules[code]* quantity)/2
+			else
+				@total_discount += @pricing_rules[code] * quantity
 			end
 
+
+
+			 
+		end
 	end
 
+
 	def total
-		@basket.each do |item, quantity|
-			@total += @pricing_rules[item] * quantity
+		@total = 0
+		@basket.each do |code, quantity|
+			if discount
+				@total += @total_discount
+			else
+			@total += @pricing_rules[code] * quantity
+			end
+		@total
 		end	 
-		puts "Total price expected: £ #{@total}"
+		puts "\n Total price expected: £ #{@total}"
 	end
-	
 end
 
 
+
+
 pricing_rules = {
-	:apple=> 5,
-	:pear => 10
+	:GR1 => 3.11,
+	:SR1 => 5.00,
+	:CF1 => 11.23
 }
 
 
 mybasket = Checkout.new(pricing_rules)
-mybasket.scan(:apple)
-mybasket.scan(:apple)
-mybasket.scan(:pear)
+# mybasket.scan(:GR1)
+# mybasket.scan(:GR1)
+mybasket.scan(:SR1)
+mybasket.scan(:SR1)
 
-puts mybasket.basket
-puts mybasket.pricing_rules
-puts mybasket.total
-puts mybasket.show_item
+# puts mybasket.basket
+# puts mybasket.pricing_rules
+mybasket.total
+
 
 
 
