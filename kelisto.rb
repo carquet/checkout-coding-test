@@ -19,7 +19,7 @@ class Checkout
 			sub_total += @pricing_rules[code]*quantity
 		end
 		@total = sub_total
-		puts "Total without discount: £ #{@total}"
+		puts "Total without discount: £ #{@total.round(3)}"
 		discount
 	end
 
@@ -47,7 +47,7 @@ class Checkout
 # apply discount when needed
 	def apply_discount
 		@total -= @discount
-		puts "Total price expected: £ #{@total}"
+		puts "Total price expected: £ #{@total.round(3)}"
 	end
 
 end
