@@ -4,7 +4,6 @@ class Checkout
 	def initialize(pricing_rules)
 		@basket = {}
 		@pricing_rules = pricing_rules	
-		
 	end
 
 # add item to cart
@@ -15,11 +14,12 @@ class Checkout
 # calculate total cost 
 	def total
 		sub_total = 0
-		@basket.each do |code, quantity|
-			sub_total += @pricing_rules[code]*quantity
-		end
+			@basket.each do |code, quantity|
+				sub_total += @pricing_rules[code]*quantity
+			end
 		@total = sub_total
 		puts "Total without discount: £ #{@total.round(3)}"
+		
 		discount
 	end
 
@@ -29,20 +29,16 @@ class Checkout
 			if code == :SR1 && quantity >= 3
 				@discount = 4.50
 				puts "your strawberry has been reduced of 4.50"
-			else
-				@green_tea_discount = 0
 			end
 
 			if code == :GR1 && quantity >=2
 				@discount = @pricing_rules[code]
 				puts "Buy one green tea get one free!"
-			else
-				@strawberry_discount = 0
 			end
 		end
-
 		apply_discount
 	end
+
 
 # apply discount when needed
 	def apply_discount
@@ -53,13 +49,12 @@ class Checkout
 end
 
 
-
-
 pricing_rules = {
 	:GR1 => 3.11,
 	:SR1 => 5.00,
 	:CF1 => 11.23
 }
+
 
 
 mybasket1 = Checkout.new(pricing_rules)
